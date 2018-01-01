@@ -1,0 +1,4 @@
+<h1 class="subtitle">Hi, <%= @name %></h1>
+
+<img src="/images/heart.png" id="heart">
+

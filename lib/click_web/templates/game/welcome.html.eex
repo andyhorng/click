@@ -1,0 +1,14 @@
+
+<%= form_for @conn, game_path(@conn, :login, @id), [], fn f -> %>
+    <div class="field">
+        <label class="label is-large" for="name">請輸入您的名字</label>
+    </div>
+    <div class="field has-addons">
+        <div class="control has-icons-left has-icons-right">
+            <input class="input is-large" placeholder="姓名" id="name" name="name">
+        </div>
+        <div class="control">
+            <%= submit "送出", class: "button is-success is-large" %>
+        </div>
+    </div>
+<% end %>
