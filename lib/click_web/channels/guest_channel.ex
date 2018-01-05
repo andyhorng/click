@@ -1,7 +1,7 @@
 defmodule ClickWeb.GuestChannel do
   use ClickWeb, :channel
 
-  def join("guest:lobby", payload, socket) do
+  def join("guest:lobby", _payload, socket) do
     {:ok, socket}
   end
 
@@ -13,6 +13,12 @@ defmodule ClickWeb.GuestChannel do
   # by sending replies to requests from the client
   def handle_in("ping", payload, socket) do
     {:reply, {:ok, payload}, socket}
+  end
+
+  def handle_in("click", %{"gid" => gid} = payload, socket) do
+    guest = {:via, Registry, {Click.Guest.Registry, gid}}
+    Agent.update guest, fn (%{clicks: clicks} = state) -> %{state | clicks: clicks + 1}  end
+    {:noreply, socket}
   end
 
   # It is also common to receive messages from the client and

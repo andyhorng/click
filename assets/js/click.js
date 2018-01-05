@@ -4,8 +4,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     let node = document.getElementById("app")
     let app = Elm.Main.embed(node, {name: Gon.assets().name})
 
-    app.ports.click.subscribe((n) => {
-    })
 
 
     let channel = socket.channel(`guest:${Gon.assets().id}`, {})
@@ -15,4 +13,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         })
         .receive("error", resp => { console.log("Unable to join", resp) })
 
+    app.ports.click.subscribe((n) => {
+        channel.push("click", {gid: Gon.assets().gid})
+    })
 });
