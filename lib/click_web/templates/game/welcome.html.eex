@@ -1,5 +1,5 @@
 
-<%= form_for @conn, game_path(@conn, :login, @id), [], fn f -> %>
+<%= form_for @conn, game_path(@conn, :login, @id), [], fn _f -> %>
     <div class="field">
         <label class="label is-large" for="name">請輸入您的名字</label>
     </div>
