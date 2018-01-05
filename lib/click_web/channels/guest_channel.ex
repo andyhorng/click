@@ -5,6 +5,10 @@ defmodule ClickWeb.GuestChannel do
     {:ok, socket}
   end
 
+  def join("guest:" <> id, _payload, socket) do
+    {:ok, %{test: id}, socket}
+  end
+
   # Channels can be used in a request/response fashion
   # by sending replies to requests from the client
   def handle_in("ping", payload, socket) do
