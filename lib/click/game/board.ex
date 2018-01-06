@@ -4,7 +4,6 @@ defmodule Click.Game.Board do
 
   defstruct guests: %{}
 
-
   def start_link(game_id) do
     Agent.start_link(fn -> %Board{} end, name: via_tuple(game_id))
   end
@@ -18,7 +17,7 @@ defmodule Click.Game.Board do
       [] ->
         {:ok, pid} = Board.start_link(game_id)
         pid
-      [{:ok, pid} | _rest] -> pid
+      [{pid, _} | _rest] -> pid
     end
 
     Agent.update board, fn (%{guests: guests} = board) -> %{board | guests: Map.put(guests, guest_id, %{name: name, count: 0})} end
