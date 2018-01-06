@@ -39,16 +39,21 @@ init flags =
 port click : Int -> Cmd msg
 
 type Msg = Click
+    | Online Int
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
     case msg of
         Click ->
             ({model | click_count = model.click_count + 1}, click 1)
+        Online c ->
+            ({model | online_guests = c}, Cmd.none)
 
+
+port online : (Int -> msg) -> Sub msg
 
 subscriptions : Model -> Sub Msg
-subscriptions model = Sub.none
+subscriptions model = online Online
 
 
 -- VIEW
@@ -56,4 +61,4 @@ subscriptions model = Sub.none
 
 view : Model -> Html Msg
 view model =
-    div [] [div [] [text model.name, text <| toString model.click_count], div [] [img [ src "/images/heart.png", onClick Click] []] ]
+    div [] [div [] [text model.name, text "|", text <| toString model.click_count, text "|", text <| toString model.online_guests], div [] [img [ src "/images/heart.png", onClick Click] []] ]

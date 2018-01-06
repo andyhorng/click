@@ -1,4 +1,5 @@
 import socket from './socket'
+import {Presence} from 'phoenix'
 
 document.addEventListener("DOMContentLoaded", (event) => {
 
@@ -7,6 +8,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     if (board_node) {
         // join 
+        let presences = {}
         let channel = socket.channel(`guest:board:${Gon.assets().id}`, {})
         channel.join()
             .receive("ok", resp => {
@@ -19,6 +21,19 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 channel.on("click", () => {
                     app.ports.clicks.send(1)
                 })
+
+                let lobby = socket.channel("guest:lobby", {})
+                lobby.join()
+                lobby.on("presence_state", (state) => {
+                    presences = Presence.syncState(presences, state)
+                    app.ports.online_users.send(Object.keys(presences).length)
+                })
+
+                lobby.on("presence_diff", (diff) => {
+                    presences = Presence.syncDiff(presences, diff)
+                    app.ports.online_users.send(Object.keys(presences).length)
+                })
+
             })
             .receive("error", resp => { console.log("Unable to join", resp) })
 

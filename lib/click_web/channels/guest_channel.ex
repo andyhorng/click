@@ -1,16 +1,29 @@
 defmodule ClickWeb.GuestChannel do
   use ClickWeb, :channel
   alias Click.Game.Board
+  alias ClickWeb.Presence
 
   def join("guest:lobby", payload, socket) do
     board = Board.via_tuple(payload["game_id"])
-    guest_data = Board.get_guest_data(board, payload["guest_id"])
-    {:ok, %{clicks: guest_data.count}, socket}
+    if payload["guest_id"] do
+      guest_data = Board.get_guest_data(board, payload["guest_id"])
+      send(self(), :after_join)
+      {:ok, %{clicks: guest_data.count}, assign(socket, :guest_id, payload["guest_id"])}
+    else
+      send(self(), :after_join)
+      {:ok, socket}
+    end
   end
 
   def join("guest:board:" <> game_id, _payload, socket) do
     board = Board.via_tuple(game_id)
     {:ok, %{game_id: game_id, total: Board.get_total_clicks(board)}, socket}
+  end
+
+  def handle_info(:after_join, socket) do
+    push socket, "presence_state", Presence.list(socket)
+    {:ok, _} = Presence.track(socket, Map.get(socket.assigns, :guest_id, "__x__"), %{online_at: inspect(System.system_time(:seconds))})
+    {:noreply, socket}
   end
 
   # Channels can be used in a request/response fashion
