@@ -32,4 +32,11 @@ defmodule Click.Game.Board do
       %{board | guests: Map.update!(guests, guest_id, fn %{count: count} = guest -> %{guest | count: count + 1} end) } end
   end
 
+
+  def get_total_clicks(board) do
+    Agent.get board, fn %{guests: guests} ->
+      guests |> Map.values |> Enum.map(fn %{count: count} -> count end) |> Enum.sum
+    end
+  end
+
 end

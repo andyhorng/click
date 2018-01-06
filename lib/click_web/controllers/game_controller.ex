@@ -19,8 +19,8 @@ defmodule ClickWeb.GameController do
     render conn, "click.html"
   end
 
-
-  def board(conn, _params) do
+  def board(conn, %{"id" => id}) do
+    conn = put_gon(conn, id: id)
     render conn, "board.html"
   end
 

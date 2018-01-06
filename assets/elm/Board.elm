@@ -18,32 +18,34 @@ main =
 -- MODEL
 
 type alias Flags =
-    { name : String
-    , clicks : Int
+    { total_clicks : Int
     }
 
 type alias Model =
-    { name : String
-    , click_count : Int
-    , online_guests : Int
+    { total_clicks : Int
     }
 
 
 init : Flags -> ( Model, Cmd Msg )
 init flags =
-    ( Model flags.name flags.clicks 0, Cmd.none )
+    ( Model flags.total_clicks, Cmd.none )
 
 
 -- UPDATE
 
-type Msg = Click
+type Msg = Click Int
 
 update : Msg -> Model -> (Model, Cmd Msg)
-update msg model = (model, Cmd.none)
+update msg model =
+    case msg of
+        Click n ->
+            ({model | total_clicks = model.total_clicks + n}, Cmd.none)
+
+port clicks : (Int -> msg) -> Sub msg
 
 
 subscriptions : Model -> Sub Msg
-subscriptions model = Sub.none
+subscriptions model = clicks Click
 
 
 -- VIEW
@@ -51,4 +53,4 @@ subscriptions model = Sub.none
 
 view : Model -> Html Msg
 view model =
-    div [] []
+    h1 [class "title is-1"] [ text <| toString model.total_clicks]

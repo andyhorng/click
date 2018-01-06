@@ -8,6 +8,11 @@ defmodule ClickWeb.GuestChannel do
     {:ok, %{clicks: guest_data.count}, socket}
   end
 
+  def join("guest:board:" <> game_id, _payload, socket) do
+    board = Board.via_tuple(game_id)
+    {:ok, %{game_id: game_id, total: Board.get_total_clicks(board)}, socket}
+  end
+
   # Channels can be used in a request/response fashion
   # by sending replies to requests from the client
   def handle_in("ping", payload, socket) do
@@ -17,6 +22,7 @@ defmodule ClickWeb.GuestChannel do
   def handle_in("click", payload, socket) do
     board = Board.via_tuple(payload["game_id"])
     Board.handle_click board, payload["gid"]
+    ClickWeb.Endpoint.broadcast! "guest:board:#{payload["game_id"]}", "click", %{}
     {:noreply, socket}
   end
 
