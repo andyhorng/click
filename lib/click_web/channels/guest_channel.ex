@@ -2,12 +2,10 @@ defmodule ClickWeb.GuestChannel do
   use ClickWeb, :channel
   alias Click.Game.Board
 
-  def join("guest:lobby", _payload, socket) do
-    {:ok, socket}
-  end
-
-  def join("guest:" <> id, _payload, socket) do
-    {:ok, %{test: id}, socket}
+  def join("guest:lobby", payload, socket) do
+    board = Board.via_tuple(payload["game_id"])
+    guest_data = Board.get_guest_data(board, payload["guest_id"])
+    {:ok, %{clicks: guest_data.count}, socket}
   end
 
   # Channels can be used in a request/response fashion
