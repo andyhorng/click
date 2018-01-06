@@ -12,7 +12,6 @@ defmodule Click.Application do
       supervisor(Click.Repo, []),
       # Start the endpoint when the application starts
       supervisor(ClickWeb.Endpoint, []),
-      supervisor(Registry, [:unique, Click.Guest.Registry]),
       # Start your own worker by calling: Click.Worker.start_link(arg1, arg2, arg3)
       # worker(Click.Worker, [arg1, arg2, arg3]),
     ]

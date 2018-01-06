@@ -15,9 +15,7 @@ defmodule ClickWeb.GuestChannel do
     {:reply, {:ok, payload}, socket}
   end
 
-  def handle_in("click", %{"gid" => gid} = payload, socket) do
-    guest = {:via, Registry, {Click.Guest.Registry, gid}}
-    Agent.update guest, fn (%{clicks: clicks} = state) -> %{state | clicks: clicks + 1}  end
+  def handle_in("click", _payload, socket) do
     {:noreply, socket}
   end
 

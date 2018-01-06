@@ -18,7 +18,7 @@ defmodule ClickWeb.Router do
 
     get "/game/:id", GameController, :welcome
     get "/game/:id/guest/:gid", GameController, :click
-    post "/game/:id/guest", GameController, :login
+    post "/game/:id/guest", GameController, :join
 
   end
 
