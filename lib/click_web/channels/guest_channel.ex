@@ -1,5 +1,6 @@
 defmodule ClickWeb.GuestChannel do
   use ClickWeb, :channel
+  alias Click.Game.Board
 
   def join("guest:lobby", _payload, socket) do
     {:ok, socket}
@@ -15,7 +16,9 @@ defmodule ClickWeb.GuestChannel do
     {:reply, {:ok, payload}, socket}
   end
 
-  def handle_in("click", _payload, socket) do
+  def handle_in("click", payload, socket) do
+    board = Board.via_tuple(payload["game_id"])
+    Board.handle_click board, payload["gid"]
     {:noreply, socket}
   end
 
