@@ -1,4 +1,4 @@
-port module Main exposing (..)
+port module Click exposing (..)
 
 import Html exposing (..)
 import Html.Events exposing (..)

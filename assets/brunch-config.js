@@ -49,7 +49,7 @@ exports.config = {
             ignore: [/vendor/]
         },
         elmBrunch: {
-            mainModules: ['Main.elm'],
+            mainModules: ['Click.elm', 'Board.elm'],
             // executablePath: '../../node_modules/elm/binwrappers',
             elmFolder: 'elm',
             outputFolder: '../vendor',

@@ -18,8 +18,8 @@ defmodule ClickWeb.Router do
 
     get "/game/:id", GameController, :welcome
     get "/game/:id/guest/:gid", GameController, :click
+    get "/game/:id/board", GameController, :board
     post "/game/:id/guest", GameController, :join
-
   end
 
   # Other scopes may use custom stacks.
