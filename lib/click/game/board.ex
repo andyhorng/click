@@ -43,4 +43,10 @@ defmodule Click.Game.Board do
     Agent.get board, fn %{guests: guests} -> guests end
   end
 
+  def start_over(board) do
+    Agent.update board, fn (%{guests: guests} = state) ->
+      %{state | guests: Enum.map(guests, fn {gid, guest} -> {gid, %{guest | count: 0}} end) |> Enum.into(%{})}
+    end
+  end
+
 end

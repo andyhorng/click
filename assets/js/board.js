@@ -22,6 +22,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
                     app.ports.clicks.send(1)
                 })
 
+                app.ports.start.subscribe((s) => {
+                    channel.push("start_over", {"game_id": Gon.assets().id})
+                })
+
                 setInterval(() => {
                     channel.push("pull_sum", {game_id: Gon.assets().id}, 2)
                         .receive("ok", resp => {

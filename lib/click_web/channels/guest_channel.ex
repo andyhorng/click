@@ -37,6 +37,13 @@ defmodule ClickWeb.GuestChannel do
     {:reply, {:ok, Board.fetch_all_guests(board)}, socket}
   end
 
+  def handle_in("start_over", payload, socket) do
+    board = Board.via_tuple(payload["game_id"])
+    Board.start_over(board)
+    ClickWeb.Endpoint.broadcast! "guest:lobby", "reset", %{game_id: payload["game_id"]}
+    {:noreply, socket}
+  end
+
   def handle_in("click", payload, socket) do
     board = Board.via_tuple(payload["game_id"])
     Board.handle_click board, payload["gid"]

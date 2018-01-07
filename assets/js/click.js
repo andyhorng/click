@@ -36,6 +36,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
                     app.ports.online.send(Object.keys(presences).length)
                 })
 
+                channel.on("reset", ({game_id}) => {
+                    if (game_id == Gon.assets().id) {
+                        window.location.reload(true)
+                    }
+                })
+
             })
             .receive("error", resp => { console.log("Unable to join", resp) })
     }

@@ -40,6 +40,7 @@ type Msg
     = Click Int
     | Online Int
     | Sum (List Score)
+    | Start
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -51,6 +52,11 @@ update msg model =
 
         Sum sum ->
             ({model | sum = sum}, Cmd.none)
+
+        Start ->
+            (model, start "start")
+
+port start : String -> Cmd msg
 
 port clicks : (Int -> msg) -> Sub msg
 port online_users : (Int -> msg) -> Sub msg
@@ -71,9 +77,15 @@ view model =
         sort = List.sortBy (\score -> -score.count)
         scores = ul [] <| List.map (\score -> li [] [ text score.name, text ": ", text <| toString score.count]) <| sort model.sum
     in 
-      h1 [class "title is-1"]
-          [ text <| toString model.total_clicks
-          , text "|"
-          , text <| toString model.online_users
-          , scores
-          ]
+        div [] 
+            [
+             h1 [class "title is-1"]
+                 [ text <| toString model.total_clicks
+                 , text "|"
+                 , text <| toString model.online_users
+                 ]
+            , div [] [scores]
+            , div []
+                [ button [onClick Start] [text "Start"]
+                ]
+            ]
