@@ -39,4 +39,8 @@ defmodule Click.Game.Board do
     end
   end
 
+  def fetch_all_guests(board) do
+    Agent.get board, fn %{guests: guests} -> guests end
+  end
+
 end

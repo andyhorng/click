@@ -22,6 +22,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
                     app.ports.clicks.send(1)
                 })
 
+                setInterval(() => {
+                    channel.push("pull_sum", {game_id: Gon.assets().id}, 2)
+                        .receive("ok", resp => {
+                            app.ports.sum.send(Object.values(resp))
+                        })
+                }, 1000)
+
                 let lobby = socket.channel("guest:lobby", {})
                 lobby.join()
                 lobby.on("presence_state", (state) => {

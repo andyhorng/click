@@ -32,6 +32,11 @@ defmodule ClickWeb.GuestChannel do
     {:reply, {:ok, payload}, socket}
   end
 
+  def handle_in("pull_sum", payload, socket) do
+    board = Board.via_tuple(payload["game_id"])
+    {:reply, {:ok, Board.fetch_all_guests(board)}, socket}
+  end
+
   def handle_in("click", payload, socket) do
     board = Board.via_tuple(payload["game_id"])
     Board.handle_click board, payload["gid"]
