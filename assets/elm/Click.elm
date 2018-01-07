@@ -82,8 +82,7 @@ info model =
         [
          div [class "container"]
                   [ div [class "level is-mobile"]
-                        [ span [ class "level-item"] [ span [ class "subtitle"] [text "在線賓客"] ]
-                        , span [ class "level-item"] [span [ class "tag is-danger"] [ text <| toString model.online_guests ]]
+                        [ span [ class "level-item"] [ span [ class "title is-large"] [text <| toString model.online_guests, text "人"] ]
                         ]
                   ]
 
@@ -94,20 +93,13 @@ count model =
     section [class "section is-medium"]
         [ div [ class "container"]
               [div [ class "level is-mobile" ]
-                   [ div [class "level-item"] [ span [ class "subtitle"] [text "送上祝福"]]
-                   , div [class "level-item"] [ span [ class "tag is-large is-danger"] [text <| toString model.click_count ]]]
+                   [ div [class "level-item"] [ span [ class "tag is-xlarge is-danger"] [text <| toString model.click_count ]]]
                   ]
         ]
 
 
 
 heart : Svg.Svg Msg
-heart = Svg.svg [SA.viewBox "0 0 100 100", SE.onClick Click]
-    [ Svg.g []
-        [ Svg.path [ SA.class "st0", SA.d "M44.6,58.362c-3.366-14.711,14.057-23.423,22.008-10.44c3.9-6.369,10.077-7.508,14.964-5.288 c2.301-21.225-23.2-32.831-35.14-13.331C33.919,8.87,6.498,22.58,11.796,45.733C16.978,68.389,46.433,80.37,46.433,80.37 s4.608-1.88,10.494-5.543C51.812,71.123,46.256,65.601,44.6,58.362z" ]
-            []
-        , Svg.g []
-            [ Svg.path [ SA.class "st0", SA.d "M66.69,47.921c7.95-12.983,25.375-4.271,22.008,10.44C85.404,72.757,66.69,80.37,66.69,80.37 s-18.715-7.612-22.008-22.008C41.316,43.65,58.739,34.939,66.69,47.921z" ] []
-            ]
-        ]
+heart = Svg.svg [SA.viewBox "0 0 100 100", SE.onClick Click ]
+    [ Svg.path [ SA.class "st0", SA.d "M50.22,27.358c13.786-22.514,44.004-7.407,38.166,18.105C82.672,70.427,50.22,83.629,50.22,83.629 S17.764,70.427,12.054,45.463C6.216,19.952,36.431,4.844,50.22,27.358z" ] []
     ]

@@ -1,1 +1,13 @@
-.st0{fill:none;stroke:#ff4d4d;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+.st0{fill:#ff4d4d;stroke:#ff4d4d;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+
+.tag:not(body).is-xlarge {
+    font-size: 3rem;
+}
+
+body
+{
+    background: linear-gradient(90deg, #F55A86 0%, #F7C997 45%); 
+    background: -moz-linear-gradient(90deg, #F55A86 0%, #F7C997 45%); 
+    background: -webkit-linear-gradient(90deg, #F55A86 0%, #F7C997 45%); 
+    background: -o-linear-gradient(90deg, #F55A86 0%, #F7C997 45%); 
+}
