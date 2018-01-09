@@ -4,10 +4,8 @@
     font-size: 3rem;
 }
 
-body
-{
-    background: linear-gradient(90deg, #F55A86 0%, #F7C997 45%); 
-    background: -moz-linear-gradient(90deg, #F55A86 0%, #F7C997 45%); 
-    background: -webkit-linear-gradient(90deg, #F55A86 0%, #F7C997 45%); 
-    background: -o-linear-gradient(90deg, #F55A86 0%, #F7C997 45%); 
+
+.myicon {
+    height: 2em;
+    width: 2em;
 }

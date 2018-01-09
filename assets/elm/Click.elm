@@ -90,13 +90,11 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
     div [ class "is-unselectable" ]
-        [ section [ class "hero" ]
-            [ div [ class "hero-body" ]
-                [ div [ class "container" ]
+        [ section [ class "section" ]
+              [ div [ class "container" ]
                     [ hearts model.hearts
                     ]
-                ]
-            ]
+              ]
         , count model
         , info model
         ]
@@ -104,7 +102,7 @@ view model =
 
 info : Model -> Html Msg
 info model =
-    section [ class "section is-medium" ]
+    section [ class "section" ]
         [ div [ class "container" ]
             [ div [ class "level is-mobile" ]
                 [ span [ class "level-item" ] [ span [ class "title is-large" ] [ text <| toString model.online_guests, text "人" ] ]
@@ -115,7 +113,7 @@ info model =
 
 count : Model -> Html Msg
 count model =
-    section [ class "section is-medium" ]
+    section [ class "section is-paddingless" ]
         [ div [ class "container" ]
             [ div [ class "level is-mobile" ]
                 [ div [ class "level-item" ] [ span [ class "tag is-xlarge is-danger" ] [ text <| toString model.click_count ] ] ]

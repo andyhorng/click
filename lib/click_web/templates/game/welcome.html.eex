@@ -1,14 +1,33 @@
-
-<%= form_for @conn, game_path(@conn, :join, @id), [], fn _f -> %>
-    <div class="field">
-        <label class="label is-large" for="name">請輸入您的名字</label>
-    </div>
-    <div class="field has-addons">
-        <div class="control has-icons-left has-icons-right">
-            <input class="input is-large" placeholder="姓名" id="name" name="name">
+<section class="hero is-fullheight">
+    <div class="hero-body">
+        <div class="container">
+            <%= form_for @conn, game_path(@conn, :join, @id), [], fn _f -> %>
+            <div class="field">
+                <label class="label is-large has-text-centered" for="name">
+                    <div class="level is-mobile">
+                        <div class="level-item">
+                            <img class="myicon" src="/images/MadebyMade-Vector-LineIcons-Love-Live-04.svg"></img>
+                        </div>
+                        <div class="level-item ">
+                            <span>
+                                請輸入您的名字
+                            </span>
+                        </div>
+                        <div class="level-item">
+                            <img class="myicon" src="/images/MadebyMade-Vector-LineIcons-Love-Live-66.svg"></img>
+                        </div>
+                    </div>
+                </label>
+            </div>
+            <div class="field has-addons has-addons-centered">
+                <div class="control has-icons-left has-icons-right">
+                    <input class="input is-large" placeholder="姓名" id="name" name="name">
+                </div>
+                <div class="control">
+                    <%= submit "送出", class: "button is-danger is-large" %>
+                </div>
+            </div>
+            <% end %>
         </div>
-        <div class="control">
-            <%= submit "送出", class: "button is-success is-large" %>
-        </div>
     </div>
-<% end %>
+</section>
