@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 board_node.innerHTML= '';
 
                 totalClicksCounter.update(resp['total'])
-                totalClicksCounter += totalClicksNum
+                totalClicksNum += resp['total']
 
                 let app = Elm.Board.embed(board_node, {total_clicks: resp['total']})
                 channel.on("click", () => {
