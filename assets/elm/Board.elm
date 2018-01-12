@@ -4,6 +4,7 @@ import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
 import String
+import Char
 
 
 main =
@@ -32,7 +33,7 @@ type alias Model =
 
 
 type alias Score =
-    { name : String, count : Int }
+    { name : String, count : Int, id : String }
 
 
 init : Flags -> ( Model, Cmd Msg )
@@ -92,22 +93,51 @@ view : Model -> Html Msg
 view model =
     let
         sort =
-            List.sortBy (\score -> -score.count)
+            List.take 10 << List.sortBy (\score -> -score.count)
+
+        guestIcon id =
+            let
+                code =
+                    List.sum <|
+                        List.map
+                            (\c ->
+                                if Char.isDigit c || Char.isUpper c then
+                                    42
+                                else
+                                    3
+                            )
+                        <|
+                            String.toList id
+            in
+                "/images/MadebyMade-Vector-LineIcons-Love-Live-" ++ (String.padLeft 2 '0' <| toString <| rem code 70) ++ ".svg"
 
         scores =
-            ul [] <| List.map (\score -> li [] [ text score.name, text ": ", text <| toString score.count ]) <| sort model.sum
+            div [] <|
+                List.map
+                    (\score ->
+                        div [ class "level" ]
+                            [ div [ class "level-left" ]
+                                [ div [ class "level-item" ]
+                                    [ figure [ class "image is-48x48" ] [ img [ src <| guestIcon score.id ] [] ]
+                                    ]
+                                , div [ class "level-item" ] [ span [ class "subtitle is-2" ] [ text score.name ] ]
+                                ]
+                            , div [ class "level-right" ] [ div [ class "level-item has-text-left" ] [ span [ class "subtitle is-2" ] [ text <| toString score.count ] ] ]
+                            ]
+                    )
+                <|
+                    sort model.sum
     in
-        section [ class "section" ]
-            [ div [ class "container" ]
-                [ h1 [ class "title is-1" ]
-                    [ text <| toString model.total_clicks
-                    , text "|"
-                    , text <| toString model.online_users
-                    ]
-                , div [] [ scores ]
-                , div [ class "level is-mobile" ]
-                    [ div [ class "level-item" ] [ button [ onClick Start, class "button is-danger" ] [ text "Start" ] ]
-                    , div [ class "level-item" ] [ button [ onClick Start, class "button is-danger" ] [ text "Stop" ] ]
+        div [ class "columns" ]
+            [ div [ class "column is-one-third" ] []
+            , div [ class "column is-one-third" ]
+                [ div []
+                    [ div [] [ scores ]
+                    , div [ class "level" ]
+                        [ div [ class "level-item" ] [ button [ onClick Start, class "button is-danger" ] [ text "Start" ] ]
+                        , div [ class "level-item" ] [ button [ onClick Start, class "button is-danger" ] [ text "Stop" ] ]
+                        ]
                     ]
                 ]
+            , div [ class "column is-one-third" ] []
             ]

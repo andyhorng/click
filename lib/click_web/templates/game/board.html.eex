@@ -1,1 +1,26 @@
+
+
+
+<section class="section">
+
+    <div class="container">
+        
+        <div class="level">
+            
+            <div class="level-item">
+                <div id="online_guests" class="title is-1"></div>
+            </div>
+        </div>
+    
+    </div>
+
+
+</section>
+
+<div class="level">
+    <div class="level-item">
+        <div id="total_clicks" class="title is-2"></div>
+    </div>
+</div>
+
 <div id="board"></div>
