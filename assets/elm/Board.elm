@@ -97,14 +97,17 @@ view model =
         scores =
             ul [] <| List.map (\score -> li [] [ text score.name, text ": ", text <| toString score.count ]) <| sort model.sum
     in
-        div []
-            [ h1 [ class "title is-1" ]
-                [ text <| toString model.total_clicks
-                , text "|"
-                , text <| toString model.online_users
-                ]
-            , div [] [ scores ]
-            , div []
-                [ button [ onClick Start ] [ text "Start" ]
+        section [ class "section" ]
+            [ div [ class "container" ]
+                [ h1 [ class "title is-1" ]
+                    [ text <| toString model.total_clicks
+                    , text "|"
+                    , text <| toString model.online_users
+                    ]
+                , div [] [ scores ]
+                , div [ class "level is-mobile" ]
+                    [ div [ class "level-item" ] [ button [ onClick Start, class "button is-danger" ] [ text "Start" ] ]
+                    , div [ class "level-item" ] [ button [ onClick Start, class "button is-danger" ] [ text "Stop" ] ]
+                    ]
                 ]
             ]
