@@ -46,6 +46,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 setInterval(() => {
                     channel.push("pull_sum", {game_id: Gon.assets().id}, 2)
                         .receive("ok", resp => {
+                            console.log(resp)
                             app.ports.sum.send(Object.keys(resp).map((key, ix) => {
                                 return {
                                     id: key,
