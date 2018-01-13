@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 })
 
                 setInterval(() => {
-                    channel.push("pull_sum", {game_id: Gon.assets().id}, 2)
+                    channel.push("pull_sum", {game_id: Gon.assets().id}, 2, 1000)
                         .receive("ok", resp => {
                             console.log(resp)
                             app.ports.sum.send(Object.keys(resp).map((key, ix) => {
@@ -55,6 +55,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
                                 }
                             }))
                         })
+                        .receive("error", (reasons) => console.log("create failed", reasons) )
+                        .receive("timeout", () => console.log("Networking issue...") )
                 }, 1000)
 
                 let lobby = socket.channel("guest:lobby", {})
