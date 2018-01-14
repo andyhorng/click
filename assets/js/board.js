@@ -2,6 +2,29 @@ import socket from './socket'
 import {Presence} from 'phoenix'
 
 
+let pull_sum = (channel, app) => {
+    setTimeout(() => {
+        channel.push("pull_sum", {game_id: Gon.assets().id}, 2, 3000)
+            .receive("ok", resp => {
+                console.log(resp)
+                app.ports.sum.send(Object.keys(resp).map((key, ix) => {
+                    return {
+                        id: key,
+                        name: resp[key].name,
+                        count: resp[key].count
+                    }
+                }))
+                pull_sum(channel, app)
+            })
+            .receive("error", (reasons) => console.log("create failed", reasons) )
+            .receive("timeout", () => {
+                console.log("Networking issue...")
+                pull_sum(channel, app)
+            } )
+    }, 500)
+}
+
+
 document.addEventListener("DOMContentLoaded", (event) => {
 
     let board_node = document.getElementById("board")
@@ -27,21 +50,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                     channel.push("start_over", {"game_id": Gon.assets().id})
                 })
 
-                setInterval(() => {
-                    channel.push("pull_sum", {game_id: Gon.assets().id}, 2, 850)
-                        .receive("ok", resp => {
-                            console.log(resp)
-                            app.ports.sum.send(Object.keys(resp).map((key, ix) => {
-                                return {
-                                    id: key,
-                                    name: resp[key].name,
-                                    count: resp[key].count
-                                }
-                            }))
-                        })
-                        .receive("error", (reasons) => console.log("create failed", reasons) )
-                        .receive("timeout", () => console.log("Networking issue...") )
-                }, 1000)
+                pull_sum(channel, app)
 
                 let lobby = socket.channel("guest:lobby", {})
                 lobby.join()
