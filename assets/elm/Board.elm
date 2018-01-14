@@ -73,7 +73,7 @@ update msg model =
               ( model, Cmd.none )
 
         Start ->
-            ( {model | stop = False}, start "start" )
+            ( {model | stop = False, total_clicks = 0}, start "start" )
 
         Stop ->
             ( {model | stop = True}, Cmd.none )
