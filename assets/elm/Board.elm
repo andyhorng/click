@@ -30,6 +30,12 @@ type alias Model =
     , online_users : Int
     , sum : List Score
     , stop : Bool
+    , hearts : List Heart
+    }
+
+type alias Heart =
+    { ttl : Int
+    , x : Int
     }
 
 
@@ -39,7 +45,7 @@ type alias Score =
 
 init : Flags -> ( Model, Cmd Msg )
 init flags =
-    ( Model flags.total_clicks 0 [] False, Cmd.none )
+    ( Model flags.total_clicks 0 [] False [], Cmd.none )
 
 
 
