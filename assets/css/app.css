@@ -24,6 +24,15 @@
     line-height: 1em;
     display: inline-block;
 }
+
+.small-pos > .pos {
+    width: .6em;
+    height: 1em;
+    overflow: hidden;
+    line-height: 1em;
+    display: inline-block;
+}
+
 .digit {
     position: relative;
 }

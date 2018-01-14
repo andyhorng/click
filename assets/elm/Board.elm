@@ -99,6 +99,15 @@ subscriptions model =
 
 -- VIEW
 
+digits num padLen =
+    let
+        chs = String.toList <| String.padLeft padLen '0' <| toString num
+        digit n = div [ class "pos"] [
+                  span [class "animate digit", style [("top", "-" ++ (String.fromChar n) ++ "em")]]
+                      [ text "0123456789" ]
+                ]
+    in
+        List.map digit chs
 
 view : Model -> Html Msg
 view model =
@@ -133,28 +142,20 @@ view model =
                                     ]
                                 , div [ class "level-item" ] [ span [ class "subtitle is-2" ] [ text score.name ] ]
                                 ]
-                            , div [ class "level-right" ] [ div [ class "level-item has-text-left" ] [ span [ class "subtitle is-2" ] [ text <| toString score.count ] ] ]
+                            , div [ class "level-right" ] [ div [ class "level-item has-text-left" ] [ span [ class "subtitle is-3 small-pos" ]  <| digits score.count 3  ] ]
                             ]
                     )
                 <|
                     sort model.sum
-        digits num =
-            let
-                chs = String.toList <| String.padLeft 5 '0' <| toString num
-                digit n = div [ class "pos"] [
-                         span [class "animate digit", style [("top", "-" ++ (String.fromChar n) ++ "em")]]
-                             [ text "0 1 2 3 4 5 6 7 8 9" ]
-                        ]
-            in
-                List.map digit chs
     in
         div [ class "columns" ]
             [ div [ class "column is-one-third" ] []
             , div [ class "column is-one-third" ]
                 [ div []
-                    [ div [ class "level"] [ div [ class "level-item"] [span [ class "title is-1"] <| digits model.total_clicks]]
+                    [ div [ class "level"] [ div [ class "level-item"] [span [ class "title is-1"] <| digits model.total_clicks 5]]
+                    , div [ class "level"] [ div [ class "level-item"] [span [ class "subtitle is-4"] <| digits model.online_users 3]]
                     , div [] [ scores ]
-                    , div [] [
+                    , div [ class "section"] [
                            div [ class "level" ]
                                [ div [ class "level-item" ] [ button [ onClick Start, class "button is-danger" ] [ text "Start" ] ]
                                , div [ class "level-item" ] [ button [ onClick Stop, class "button is-danger" ] [ text "Stop" ] ]
