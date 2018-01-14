@@ -15,3 +15,23 @@
 
 #total_clicks {
 }
+
+
+.pos {
+    width: 1em;
+    height: 1em;
+    overflow: hidden;
+    line-height: 1em;
+    display: inline-block;
+}
+.digit {
+    position: relative;
+}
+
+.animate {
+    -moz-transition: all 0.5s; 
+    -webkit-transition: all 0.5s;  
+    -ms-transition: all 0.5s;  
+    -o-transition: all 0.5s;  
+    transition: all 0.5s;  
+}

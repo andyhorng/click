@@ -29,6 +29,7 @@ type alias Model =
     { total_clicks : Int
     , online_users : Int
     , sum : List Score
+    , stop : Bool
     }
 
 
@@ -38,7 +39,7 @@ type alias Score =
 
 init : Flags -> ( Model, Cmd Msg )
 init flags =
-    ( Model flags.total_clicks 0 [], Cmd.none )
+    ( Model flags.total_clicks 0 [] False, Cmd.none )
 
 
 
@@ -50,22 +51,32 @@ type Msg
     | Online Int
     | Sum (List Score)
     | Start
+    | Stop
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Click n ->
-            ( { model | total_clicks = model.total_clicks + n }, Cmd.none )
+            if not model.stop then
+                ( { model | total_clicks = model.total_clicks + n }, Cmd.none )
+            else
+                ( model, Cmd.none )
 
         Online n ->
             ( { model | online_users = n }, Cmd.none )
 
         Sum sum ->
-            ( { model | sum = sum }, Cmd.none )
+            if not model.stop then
+              ( { model | sum = sum }, Cmd.none )
+            else
+              ( model, Cmd.none )
 
         Start ->
-            ( model, start "start" )
+            ( {model | stop = False}, start "start" )
+
+        Stop ->
+            ( {model | stop = True}, Cmd.none )
 
 
 port start : String -> Cmd msg
@@ -127,16 +138,27 @@ view model =
                     )
                 <|
                     sort model.sum
+        digits num =
+            let
+                chs = String.toList <| String.padLeft 5 '0' <| toString num
+                digit n = div [ class "pos"] [
+                         span [class "animate digit", style [("top", "-" ++ (String.fromChar n) ++ "em")]]
+                             [ text "0 1 2 3 4 5 6 7 8 9" ]
+                        ]
+            in
+                List.map digit chs
     in
         div [ class "columns" ]
             [ div [ class "column is-one-third" ] []
             , div [ class "column is-one-third" ]
                 [ div []
-                    [ div [] [ scores ]
-                    , div [ class "level" ]
-                        [ div [ class "level-item" ] [ button [ onClick Start, class "button is-danger" ] [ text "Start" ] ]
-                        , div [ class "level-item" ] [ button [ onClick Start, class "button is-danger" ] [ text "Stop" ] ]
-                        ]
+                    [ div [ class "level"] [ div [ class "level-item"] [span [ class "title is-1"] <| digits model.total_clicks]]
+                    , div [] [ scores ]
+                    , div [] [
+                           div [ class "level" ]
+                               [ div [ class "level-item" ] [ button [ onClick Start, class "button is-danger" ] [ text "Start" ] ]
+                               , div [ class "level-item" ] [ button [ onClick Stop, class "button is-danger" ] [ text "Stop" ] ]
+                               ]]
                     ]
                 ]
             , div [ class "column is-one-third" ] []
