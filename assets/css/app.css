@@ -1,5 +1,19 @@
 .st0{fill:#ff4d4d;stroke:#ff4d4d;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
 
+.background-heart {
+    position: absolute;
+    width: 2em;
+    height: 2em;
+    -moz-transition: all 10s linear;
+    -webkit-transition: all 10s linear;
+    -ms-transition: all 10s linear;
+    -o-transition: all 10s linear;
+    transition: all 10s linear;
+}
+
+.background-heart.background-heart-done {
+}
+
 .tag:not(body).is-xlarge {
     font-size: 3rem;
 }
