@@ -26,6 +26,11 @@ defmodule ClickWeb.GuestChannel do
     {:noreply, socket}
   end
 
+  def handle_info({:push_sum, board}, socket) do
+    push socket, "sum", Board.fetch_all_guests(board)
+    {:noreply, socket}
+  end
+
   # Channels can be used in a request/response fashion
   # by sending replies to requests from the client
   def handle_in("ping", payload, socket) do
@@ -34,8 +39,11 @@ defmodule ClickWeb.GuestChannel do
 
   def handle_in("pull_sum", payload, socket) do
     board = Board.via_tuple(payload["game_id"])
-    {:reply, {:ok, Board.fetch_all_guests(board)}, socket}
+    send(self(), {:push_sum, board})
+    {:noreply, socket}
   end
+
+
 
   def handle_in("start_over", payload, socket) do
     board = Board.via_tuple(payload["game_id"])

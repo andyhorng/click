@@ -2,26 +2,11 @@ import socket from './socket'
 import {Presence} from 'phoenix'
 
 
-let pull_sum = (channel, app) => {
+let pull_sum = (channel) => {
     setTimeout(() => {
-        channel.push("pull_sum", {game_id: Gon.assets().id}, 2, 3000)
-            .receive("ok", resp => {
-                console.log(resp)
-                app.ports.sum.send(Object.keys(resp).map((key, ix) => {
-                    return {
-                        id: key,
-                        name: resp[key].name,
-                        count: resp[key].count
-                    }
-                }))
-                pull_sum(channel, app)
-            })
-            .receive("error", (reasons) => console.log("create failed", reasons) )
-            .receive("timeout", () => {
-                console.log("Networking issue...")
-                pull_sum(channel, app)
-            } )
-    }, 500)
+        channel.push("pull_sum", {game_id: Gon.assets().id}, 2, 995)
+        pull_sum(channel)
+    }, 1000)
 }
 
 
@@ -46,11 +31,22 @@ document.addEventListener("DOMContentLoaded", (event) => {
                     app.ports.clicks.send(1)
                 })
 
+                channel.on("sum", (resp) => {
+                    console.log(resp)
+                    app.ports.sum.send(Object.keys(resp).map((key, ix) => {
+                        return {
+                            id: key,
+                            name: resp[key].name,
+                            count: resp[key].count
+                        }
+                    }))
+                })
+
                 app.ports.start.subscribe((s) => {
                     channel.push("start_over", {"game_id": Gon.assets().id})
                 })
 
-                pull_sum(channel, app)
+                pull_sum(channel)
 
                 let lobby = socket.channel("guest:lobby", {})
                 lobby.join()
