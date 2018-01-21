@@ -11,6 +11,7 @@ import Task
 import Svg
 import Svg.Events as SE
 import Svg.Attributes as SA
+import Time as T
 
 
 main =
@@ -39,12 +40,15 @@ type alias Model =
     , hearts : List Heart
     , winHeight : Int
     , winWidth : Int
+    , ttl : Int
     }
 
 
 type alias Heart =
     { done : Bool
     , x : Int
+    , ttl : Int
+    , seq : Int
     }
 
 
@@ -54,7 +58,7 @@ type alias Score =
 
 init : Flags -> ( Model, Cmd Msg )
 init flags =
-    ( Model flags.total_clicks 0 [] False [] 0 0, Task.perform (\size -> Resize size.width size.height) Window.size )
+    ( Model flags.total_clicks 0 [] False [] 0 0 0, Task.perform (\size -> Resize size.width size.height) Window.size )
 
 
 
@@ -69,6 +73,7 @@ type Msg
     | Stop
     | HeartEnter Heart
     | Resize Int Int
+    | Tick T.Time
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -76,7 +81,7 @@ update msg model =
     case msg of
         Click n ->
             if not model.stop then
-                ( { model | total_clicks = model.total_clicks + n }, Random.generate HeartEnter <| ((Random.int 0 100) |> Random.map (\x -> Heart False x)) )
+                ( { model | total_clicks = model.total_clicks + n }, Random.generate HeartEnter <| ((Random.int 0 100) |> Random.map (\x -> Heart False x 15 model.total_clicks)) )
             else
                 ( model, Cmd.none )
 
@@ -93,13 +98,22 @@ update msg model =
                 ( model, Cmd.none )
 
         Start ->
-            ( { model | stop = False, total_clicks = 0 }, start "start" )
+            ( { model | stop = False, total_clicks = 0, ttl = 60 }, start "start" )
 
         Stop ->
             ( { model | stop = True }, Cmd.none )
 
         Resize width height ->
             ( { model | winHeight = height, winWidth = width }, Cmd.none )
+
+        Tick _ ->
+            let
+                isDead h =
+                    h.ttl >= 0
+                isStop = if model.ttl == 0 then True else False
+                calTTL = if isStop then model.ttl else model.ttl - 1
+            in
+                ( { model | stop = isStop, ttl = calTTL, hearts = List.map (\h -> { h | ttl = h.ttl - 1 }) model.hearts }, Cmd.none )
 
 
 port start : String -> Cmd msg
@@ -116,7 +130,7 @@ port sum : (List Score -> msg) -> Sub msg
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.batch [ clicks Click, online_users Online, sum Sum, Window.resizes (\size -> Resize size.width size.height) ]
+    Sub.batch [ clicks Click, online_users Online, sum Sum, Window.resizes (\size -> Resize size.width size.height), T.every (T.second) Tick ]
 
 
 
@@ -212,6 +226,7 @@ view model =
                 [ div []
                     [ div [ class "level" ] [ div [ class "level-item" ] [ span [ class "title is-1" ] <| digits model.total_clicks 5 ] ]
                     , div [ class "level" ] [ div [ class "level-item" ] [ span [ class "subtitle is-4" ] <| digits model.online_users 3 ] ]
+                    , div [ class "level" ] [ div [ class "level-item" ] [ span [ class "subtitle is-4" ] <| digits model.ttl 3 ] ]
                     , div [] [ scores ]
                     , div [ class "section" ]
                         [ div [ class "level" ]
