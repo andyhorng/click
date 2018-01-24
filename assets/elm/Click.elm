@@ -90,7 +90,7 @@ update msg model =
             let
                 currentId = List.sum <| List.map .seqId model.hearts
             in
-                ( model, Random.generate (NewHeart (currentId + 1)) (Random.int 0 1000) )
+                ( model, Random.generate (NewHeart (currentId + 1)) (Random.int -50 550 ) )
 
         NewHeart id x ->
             ( { model | hearts = model.hearts ++ [ Heart x 0 id ] }, Cmd.none )
@@ -153,7 +153,7 @@ count model =
 smallHeart : Heart -> ( String, Svg.Svg Msg )
 smallHeart heart =
     ( toString heart.seqId
-    , Svg.svg [ SA.x <| toString heart.x, SA.y "1100", SA.opacity "1", SA.viewBox "0 0 1000 1000", SE.onMouseOver <| Click heart.seqId ]
+    , Svg.svg [ SA.x <| toString heart.x, SA.y "900", SA.opacity "1", SA.viewBox "0 0 500 500", SE.onClick <| Click heart.seqId ]
         [ Svg.animate [ SA.attributeName "y", SA.to "-100", SA.dur "3s", SA.repeatCount "1" ] []
         , Svg.animate [ SA.attributeName "opacity", SA.to "0", SA.begin "2s", SA.dur "3s", SA.repeatCount "1" ] []
         , Svg.path [ SA.class "st0", SA.d "M50.22,27.358c13.786-22.514,44.004-7.407,38.166,18.105C82.672,70.427,50.22,83.629,50.22,83.629 S17.764,70.427,12.054,45.463C6.216,19.952,36.431,4.844,50.22,27.358z" ] []
@@ -163,4 +163,4 @@ smallHeart heart =
 
 hearts : List Heart -> Svg.Svg Msg
 hearts heartList =
-    Keyed.node "svg" [ SA.viewBox "0 0 1000 1000" ] <| List.map smallHeart heartList
+    Keyed.node "svg" [ SA.viewBox "0 0 500 500" ] <| List.map smallHeart heartList
