@@ -14,10 +14,13 @@
 .background-heart.background-heart-done {
 }
 
-.tag:not(body).is-xlarge {
-    font-size: 3rem;
+.title.is-xlarge {
+    font-size: 5rem;
 }
 
+.title.is-large {
+    font-size: 2rem;
+}
 
 .myicon {
     height: 2em;
@@ -45,6 +48,10 @@
     overflow: hidden;
     line-height: 1em;
     display: inline-block;
+}
+
+.total-clicks .digit {
+    color: #ff3860;
 }
 
 .digit {

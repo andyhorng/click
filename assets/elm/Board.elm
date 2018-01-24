@@ -155,7 +155,7 @@ view : Model -> Html Msg
 view model =
     let
         sort =
-            List.take 10 << List.sortBy (\score -> -score.count)
+            List.take 5 << List.sortBy (\score -> -score.count)
 
         guestIcon id =
             let
@@ -224,14 +224,13 @@ view model =
             [ div [ class "column is-one-third" ] []
             , div [ class "column is-one-third" ]
                 [ div []
-                    [ div [ class "level" ] [ div [ class "level-item" ] [ span [ class "title is-1" ] <| digits model.total_clicks 5 ] ]
-                    , div [ class "level" ] [ div [ class "level-item" ] [ span [ class "subtitle is-4" ] <| digits model.online_users 3 ] ]
-                    , div [ class "level" ] [ div [ class "level-item" ] [ span [ class "subtitle is-4" ] <| digits model.ttl 3 ] ]
+                    [ div [ class "level" ] [ div [ class "level-item" ] [ span [ class "title is-xlarge total-clicks" ] <| digits model.total_clicks 5 ] ]
+                    , div [ class "level" ] [ div [ class "level-item" ] [ span [ class "title is-large" ] <| (digits model.online_users 3) ++ [text "人"] ] ]
+                    , div [ class "level" ] [ div [ class "level-item" ] [ span [ class "title is-large" ] <| (digits model.ttl 3) ++ [text "秒"]] ]
                     , div [] [ scores ]
                     , div [ class "section" ]
                         [ div [ class "level" ]
                             [ div [ class "level-item" ] [ button [ onClick Start, class "button is-danger" ] [ text "Start" ] ]
-                            , div [ class "level-item" ] [ button [ onClick Stop, class "button is-danger" ] [ text "Stop" ] ]
                             ]
                         ]
                     , heartsInBackground model.hearts
