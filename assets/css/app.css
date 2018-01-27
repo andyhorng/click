@@ -14,6 +14,10 @@
 .background-heart.background-heart-done {
 }
 
+.tag:not(body).is-xlarge {
+    font-size: 3rem;
+}
+
 .title.is-xlarge {
     font-size: 5rem;
 }
